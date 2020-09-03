@@ -6,7 +6,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder 
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import mean_absolute_error, accuracy_score
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 from itertools import combinations
 
 # input file path
@@ -58,6 +59,7 @@ def drop_cols(train_X, val_X, cols):
     return drop_train_X, drop_val_X
 
 def scale_data(train_X, val_X):
+    """Function scales data using StandardScaler"""
     # scale data
     scaler = StandardScaler()
     scaler.fit(train_X)
@@ -150,23 +152,23 @@ def test_features(data, y, features, model):
         else:
             oh_train_X, oh_val_X = train_X, val_X
             label_train_X, label_val_X = train_X, val_X
-        # calculate mean absolute error for both types of encoding
-        oh_mae = test_model(oh_train_X, oh_val_X, train_y, val_y, model)
-        label_mae = test_model(label_train_X, label_val_X, train_y, val_y, model)
-        # add mae to np arrays
-        oh_encode_list = np.append(oh_encode_list, oh_mae)
-        label_encode_list = np.append(label_encode_list, label_mae)
+        # calculate accuracy for both types of encoding
+        oh_acc = test_model(oh_train_X, oh_val_X, train_y, val_y, model)
+        label_acc = test_model(label_train_X, label_val_X, train_y, val_y, model)
+        # add accuracy to np arrays
+        oh_encode_list = np.append(oh_encode_list, oh_acc)
+        label_encode_list = np.append(label_encode_list, label_acc)
 
-    # find min mean absolute error
+    # find max accuracy
     if oh_encode_list.min() < label_encode_list.min():
         encoding_method = "oh_encoding"
         best_feature_list = features[np.argmax(oh_encode_list)]
-        mae = oh_encode_list.max()
+        acc = oh_encode_list.max()
     else:
         encoding_method = "label_encoding"
         best_feature_list = features[np.argmax(label_encode_list)]
-        mae = oh_encode_list.max()
-    return encoding_method, best_feature_list, mae
+        acc = oh_encode_list.max()
+    return encoding_method, best_feature_list, acc
 
     
 
@@ -181,16 +183,22 @@ oh_train_X, oh_val_X = oh_encoding(train_X, val_X, features_to_encode)
 
 # define model
 logistic_regression_model = LogisticRegression(random_state=1)
+knn = KNeighborsClassifier(n_neighbors=5)
 
-# test model
-print('Testing categorical encoding: ')
-print('drop categorical: ' + str(test_model(drop_train_X, drop_val_X, train_y, val_y, logistic_regression_model)))
-print('label encode categorical: ' + str(test_model(label_train_X, label_val_X, train_y, val_y, logistic_regression_model)))
-print('one-hot encode categorical: ' + str(test_model(oh_train_X, oh_val_X, train_y, val_y, logistic_regression_model)))
-
-print('Testing features: ')
+print('Testing features and models: ')
 
 # get all combinations of features
 feature_combinations = sum([list(map(list, combinations(features, i))) for i in range(len(features) + 1)], [])
 feature_combinations = feature_combinations[1:]
+print("Logistic regression model:")
 print(test_features(data, y, feature_combinations, logistic_regression_model))
+print("KNN model:")
+print(test_features(data, y, feature_combinations, knn))
+print("Testing differernt k values for KNN:")
+
+k_values = [3,5,10]
+
+for k in k_values:
+    knn = KNeighborsClassifier(n_neighbors=k)
+    print(k)
+    print(test_features(data, y, feature_combinations, knn))
