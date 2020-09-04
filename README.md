@@ -299,10 +299,14 @@ model determined using the provided train.csv file is 0.83.
  
 ## Usage
 
+### Install Dependencies 
+
 Install dependencies using provided environment file: 
 ```
 conda env create -f environment.yml
 ```
+
+### Predict Survival
 
 Predict survival using `titanic_knn_predict.py`. 
 
