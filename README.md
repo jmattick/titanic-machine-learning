@@ -295,7 +295,60 @@ predicts survival using the 'Pclass', 'Sex', 'Age', 'Parch' features with
 k=5. The `titanic_knn_predict.py` script requires a training dataset in 
 addition to the input dataset to be predicted. The output is a csv file 
 containing the Passenger Ids and predicted survival. The accuracy of this 
-model determined using the provided train.csv file is 0.83. 
+model determined using the provided train.csv file is 0.83. The KNN predict 
+function is shown here:
+
+```
+def run_knn_prediction(train, val, y, features, k):
+    """Function to predict survial using a knn model given a training and
+    test dataset"""
+    # setup list to subset data
+    first_subset = []
+    first_subset.extend(features)
+    first_subset.append(y)
+
+    # subset data
+    train_X = train[first_subset]  # include passenger id and survived
+    val_X = val[features]
+
+    # drop missing values
+    train_X = train_X.dropna(axis=0)
+    val_X = val_X.dropna(axis=0)
+
+    # separate passenger ID and y
+    train_ID = train_X['PassengerId']
+    train_y = train_X[y]
+    val_ID = val_X['PassengerId']
+
+    # remove passenger ID in train and val dataset
+    train_X = train_X.drop(['PassengerId', 'Survived'], axis=1)
+    val_X = val_X.drop(['PassengerId'], axis=1)
+
+    # label encoding
+    s = (train_X.dtypes == 'object')
+    # if columns need to be encoded
+    if len(s) > 0:
+        # select features with object dtype
+        features_to_encode = list(s[s].index)
+        # encode categorical columns using label encoding
+        label_train_X, label_val_X = label_encoding(train_X, val_X, features_to_encode)
+    else:
+        label_train_X, label_val_X = train_X, val_X
+
+    # scale
+    label_train_X, label_val_X = scale_data(label_train_X, label_val_X)
+
+    # define model
+    knn = KNeighborsClassifier(n_neighbors=k)
+
+    # Fit model
+    knn.fit(label_train_X, train_y)
+
+    # get predicted values
+    val_predict = knn.predict(label_val_X)
+
+    return val_ID, val_predict
+```
  
 ## Usage
 
