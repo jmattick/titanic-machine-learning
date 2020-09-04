@@ -137,7 +137,7 @@ def oh_encoding(train_X, val_X, cols):
     
     return oh_train_X, oh_val_X
 ```
-To evaluate the models, the accuracy was compare. This
+To evaluate the models, the accuracy was compared. This
 was calculated using the sklearn accuracy_score method.
 A function was created to fit/predict using the given model
 and return the accuracy. 
@@ -157,7 +157,7 @@ def test_model(train_X, val_X, train_y, val_y, model):
     return accuracy_score(val_y, val_predict)
 ```
 
-Data was scaled using the sklearn StandardScale. 
+Data was scaled using the sklearn StandardScaler. 
 A function was written to scale the data for both the 
 training set and the test set.
 
@@ -251,6 +251,7 @@ test_features(data, y, feature_combinations, logistic_regression_model)
 
 The results of test_features using a Logistic Regression model determined
 the following:
+
 best encoding method: label encoding
 best features: Sex, Age, Parch, Embarked
 accuracy: 0.76
@@ -271,6 +272,7 @@ for k in k_values:
 ```
 
 The results of this testing determined the following:
+
 best encoding method: label encoding
 best features: Pclass, Sex, Age, Parch
 best k: 5
