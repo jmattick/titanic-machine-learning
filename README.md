@@ -25,20 +25,20 @@ data = data.dropna(axis=0)
 The data is summarized below:
 
 
- #  | Column      | Non-Null Count | Dtype
---- | ------      | -------------- | -----
- 0  | PassengerId | 183 non-null   | int64
- 1  | Survived    | 183 non-null   | int64
- 2  | Pclass      | 183 non-null   | int64
- 3  | Name        | 183 non-null   | object
- 4  | Sex         | 183 non-null   | object
- 5  | Age         | 183 non-null   | float64
- 6  | SibSp       | 183 non-null   | int64
- 7  | Parch       | 183 non-null   | int64
- 8  | Ticket      | 183 non-null   | object
- 9  | Fare        | 183 non-null   | float64
- 10 | Cabin       | 183 non-null   | object
- 11 | Embarked    | 183 non-null   | object
+| Column      | Non-Null Count | Dtype
+| ------      | -------------- | -----
+| PassengerId | 183 non-null   | int64
+| Survived    | 183 non-null   | int64
+| Pclass      | 183 non-null   | int64
+| Name        | 183 non-null   | object
+| Sex         | 183 non-null   | object
+| Age         | 183 non-null   | float64
+| SibSp       | 183 non-null   | int64
+| Parch       | 183 non-null   | int64
+| Ticket      | 183 non-null   | object
+| Fare        | 183 non-null   | float64
+| Cabin       | 183 non-null   | object
+| Embarked    | 183 non-null   | object
 
 The Survived column was set as the target.
 ```
