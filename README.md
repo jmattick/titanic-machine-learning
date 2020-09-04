@@ -253,7 +253,9 @@ The results of test_features using a Logistic Regression model determined
 the following:
 
 best encoding method: label encoding
+
 best features: Sex, Age, Parch, Embarked
+
 accuracy: 0.76
 
 The second model tested was the k-nearest neighbors model (KNN).
@@ -274,8 +276,11 @@ for k in k_values:
 The results of this testing determined the following:
 
 best encoding method: label encoding
+
 best features: Pclass, Sex, Age, Parch
+
 best k: 5
+
 accuracy: 0.83
 
 The KNN method using k=5 and the features Pclass, Sex, 
